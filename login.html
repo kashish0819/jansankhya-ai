@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JanSankhya — Official Login</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+    html{scroll-behavior:smooth;}
+    body{font-family:'Noto Sans',sans-serif;background:#F4F5F7;color:#1a1a2e;min-height:100vh;display:flex;flex-direction:column;}
+
+    /* GOV STRIP */
+    .gov-strip{background:#14326B;border-bottom:3px solid #FF6B00;}
+    .gov-strip-inner{display:flex;align-items:center;justify-content:space-between;padding:6px 36px;max-width:1280px;margin:0 auto;flex-wrap:wrap;gap:8px;}
+    .gs-left{display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+    .gs-hindi{font-family:'Noto Sans Devanagari',sans-serif;font-size:14px;font-weight:700;color:#fff;line-height:1.3;}
+    .gs-english{font-size:11px;color:rgba(255,255,255,0.75);}
+    .gs-vline{width:1px;height:32px;background:rgba(255,255,255,0.2);flex-shrink:0;}
+    .gs-min-main{font-size:13px;font-weight:600;color:#fff;}
+    .gs-min-sub{font-size:10px;color:rgba(255,255,255,0.6);margin-top:1px;}
+    .gs-right{display:flex;align-items:center;gap:6px;flex-shrink:0;}
+    .gs-link{font-size:11px;color:rgba(255,255,255,0.65);text-decoration:none;padding:3px 7px;border-radius:3px;transition:all .15s;}
+    .gs-link:hover{color:#fff;background:rgba(255,255,255,0.12);}
+    .gs-sep{color:rgba(255,255,255,0.3);font-size:11px;}
+    .gs-hindi-link{font-family:'Noto Sans Devanagari',sans-serif;font-size:13px;}
+
+    /* MAIN HEADER */
+    .main-header{background:#fff;border-bottom:1px solid #dde1e7;box-shadow:0 2px 6px rgba(0,0,0,0.06);}
+    .mh-inner{display:flex;align-items:center;justify-content:space-between;padding:14px 36px;max-width:1280px;margin:0 auto;flex-wrap:wrap;gap:14px;}
+    .mh-brand{display:flex;align-items:center;gap:16px;flex:1;}
+    .mh-chakra{animation:spinChakra 24s linear infinite;flex-shrink:0;}
+    @keyframes spinChakra{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
+    .mh-text{display:flex;flex-direction:column;gap:3px;}
+    .mh-hindi{font-family:'Noto Sans Devanagari',sans-serif;font-size:14px;font-weight:700;color:#FF6B00;}
+    .mh-english{font-size:22px;font-weight:700;color:#14326B;line-height:1.1;}
+    .mh-tagline{font-size:11px;color:#777;margin-top:2px;}
+    .mh-right{display:flex;flex-direction:column;align-items:flex-end;gap:4px;}
+    .live-badge{display:flex;align-items:center;gap:6px;background:#f0fdf4;border:1px solid #86efac;padding:4px 12px;border-radius:99px;font-size:11px;font-weight:700;letter-spacing:1px;color:#16a34a;}
+    .live-dot{width:7px;height:7px;border-radius:50%;background:#22c55e;animation:livePulse 1.5s ease-in-out infinite;display:inline-block;}
+    @keyframes livePulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.5;transform:scale(1.5);}}
+    .mh-clock{font-size:20px;font-weight:700;color:#14326B;font-variant-numeric:tabular-nums;letter-spacing:.5px;}
+    .mh-date{font-size:12px;color:#666;}
+    .mh-nic{font-size:10px;color:#aaa;letter-spacing:.5px;}
+    .tricolor{display:flex;height:5px;}
+    .tc-s{flex:1;background:#FF6B00;}.tc-w{flex:1;background:#fff;border-top:1px solid #e5e7eb;border-bottom:1px solid #e5e7eb;}.tc-g{flex:1;background:#138808;}
+
+    /* NAVBAR */
+    .gov-nav{background:#14326B;}
+    .gov-nav-inner{display:flex;align-items:center;padding:0 36px;max-width:1280px;margin:0 auto;overflow-x:auto;}
+    .gov-nav-inner::-webkit-scrollbar{display:none;}
+    .nav-item{padding:11px 18px;font-size:13px;font-weight:500;color:rgba(255,255,255,0.75);cursor:pointer;white-space:nowrap;border-bottom:3px solid transparent;transition:all .18s;text-decoration:none;display:inline-block;}
+    .nav-item:hover{color:#fff;background:rgba(255,255,255,0.07);}
+    .nav-item.active{color:#fff;border-bottom-color:#FF6B00;}
+
+    /* MODAL OVERLAY for nav pages */
+    .nav-modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:500;align-items:center;justify-content:center;}
+    .nav-modal-overlay.open{display:flex;}
+    .nav-modal{background:#fff;border-radius:8px;padding:32px;max-width:560px;width:90%;position:relative;box-shadow:0 20px 60px rgba(0,0,0,0.15);}
+    .nav-modal-close{position:absolute;top:14px;right:16px;background:none;border:none;font-size:20px;cursor:pointer;color:#666;}
+    .nav-modal-close:hover{color:#1a1a2e;}
+    .nav-modal h2{font-size:20px;font-weight:700;color:#14326B;margin-bottom:8px;}
+    .nav-modal .nm-sub{font-size:13px;color:#777;margin-bottom:16px;}
+    .nav-modal p{font-size:13px;color:#444;line-height:1.7;}
+    .nav-modal .nm-divider{height:2px;background:#FF6B00;width:40px;margin:12px 0;}
+
+    /* BREADCRUMB */
+    .breadcrumb{background:#e4e8ee;border-bottom:1px solid #d0d5de;padding:8px 36px;}
+    .bc-inner{max-width:1280px;margin:0 auto;font-size:12px;color:#555;}
+    .bc-inner a{color:#14326B;text-decoration:none;}
+    .bc-inner a:hover{text-decoration:underline;}
+    .bc-sep{margin:0 6px;color:#999;}
+    .bc-current{color:#333;font-weight:600;}
+
+    /* LOGIN BODY */
+    .login-body{flex:1;display:flex;align-items:flex-start;justify-content:center;padding:32px 36px;}
+    .login-wrap{display:grid;grid-template-columns:1fr 1.15fr;gap:24px;width:100%;max-width:1100px;}
+
+    /* INFO PANEL */
+    .info-panel{background:#14326B;border-radius:6px;padding:30px;color:#fff;display:flex;flex-direction:column;}
+    .ip-title{font-size:26px;font-weight:700;}
+    .ip-sub{font-size:14px;color:rgba(255,255,255,0.65);margin-top:4px;}
+    .ip-div{height:3px;width:50px;background:#FF6B00;margin:18px 0;border-radius:99px;}
+    .ip-points{display:flex;flex-direction:column;gap:16px;flex:1;}
+    .ip-pt{display:flex;align-items:flex-start;gap:12px;}
+    .ip-pt-icon{font-size:20px;flex-shrink:0;margin-top:2px;}
+    .ip-pt-text{display:flex;flex-direction:column;gap:2px;}
+    .ip-pt-text strong{font-size:13px;font-weight:600;color:#fff;}
+    .ip-pt-text span{font-size:12px;color:rgba(255,255,255,0.55);}
+    .ip-notice{margin-top:24px;padding:12px 14px;background:rgba(255,107,0,0.15);border:1px solid rgba(255,107,0,0.35);border-radius:6px;font-size:11px;color:rgba(255,255,255,0.7);line-height:1.6;}
+
+    /* FORM PANEL */
+    .form-panel{background:#fff;border-radius:6px;border:1px solid #d0d5de;box-shadow:0 2px 14px rgba(0,0,0,0.07);overflow:hidden;display:flex;flex-direction:column;}
+    .fp-header{background:#14326B;padding:18px 28px;border-bottom:3px solid #FF6B00;}
+    .fp-title{font-size:17px;font-weight:700;color:#fff;}
+    .fp-sub{font-family:'Noto Sans Devanagari',sans-serif;font-size:13px;color:rgba(255,255,255,0.65);margin-top:3px;}
+
+    /* ROLE TABS */
+    .role-section{padding:20px 28px 0;}
+    .role-section-label{font-size:11px;font-weight:700;color:#777;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px;}
+    .role-tabs{display:flex;gap:8px;}
+    .role-tab{flex:1;padding:10px 6px;border-radius:5px;border:2px solid #dde1e7;background:#f7f8fa;font-family:'Noto Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all .18s;color:#555;text-align:center;}
+    .role-tab:hover{border-color:#14326B;color:#14326B;background:#eef1f8;}
+    .role-tab.active{border-color:#14326B;background:#14326B;color:#fff;}
+    .role-tab .ri{display:block;font-size:18px;margin-bottom:4px;}
+
+    /* ROLE DESC */
+    .role-desc{margin:10px 28px 0;padding:10px 14px;background:#f0f4ff;border:1px solid #c7d5f0;border-radius:5px;font-size:12px;color:#14326B;line-height:1.5;}
+
+    /* FORM FIELDS */
+    .form-fields{padding:18px 28px;display:flex;flex-direction:column;gap:14px;}
+    .fg{display:flex;flex-direction:column;gap:5px;}
+    .fl{font-size:12px;font-weight:600;color:#333;}
+    .fi{width:100%;padding:10px 13px;border:1.5px solid #d0d5de;border-radius:5px;font-family:'Noto Sans',sans-serif;font-size:14px;color:#1a1a2e;background:#fff;outline:none;transition:all .18s;}
+    .fi:focus{border-color:#14326B;box-shadow:0 0 0 3px rgba(20,50,107,0.1);}
+    .pw-wrap{position:relative;}
+    .pw-wrap .fi{padding-right:44px;}
+    .pw-eye{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:16px;color:#888;padding:4px;}
+
+    /* CAPTCHA */
+    .cap-row{display:flex;gap:10px;align-items:center;}
+    .cap-box{flex-shrink:0;width:130px;height:42px;background:linear-gradient(135deg,#e8edf6,#d5ddf0);border:1.5px solid #b0bcd8;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700;color:#14326B;letter-spacing:6px;font-style:italic;user-select:none;font-family:monospace;text-shadow:1px 1px 0 rgba(255,255,255,0.5);}
+    .cap-refresh{background:#f0f4ff;border:1.5px solid #c7d5f0;border-radius:5px;padding:9px 12px;cursor:pointer;font-size:16px;color:#14326B;transition:all .18s;flex-shrink:0;}
+    .cap-refresh:hover{background:#e0e8f8;transform:rotate(180deg);}
+    .cap-input{flex:1;}
+
+    /* ERROR */
+    .login-error{background:#fef2f2;border:1px solid #fca5a5;border-radius:5px;padding:10px 14px;font-size:13px;color:#dc2626;display:flex;align-items:center;gap:8px;}
+
+    /* LOGIN BTN */
+    .login-btn{width:100%;padding:13px;background:#14326B;color:#fff;border:none;border-radius:5px;font-family:'Noto Sans',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:all .2s;letter-spacing:.3px;}
+    .login-btn:hover{background:#1a3f87;box-shadow:0 4px 16px rgba(20,50,107,0.3);transform:translateY(-1px);}
+    .login-btn.loading{opacity:.7;cursor:not-allowed;transform:none;}
+
+    /* HELPER LINKS */
+    .helper-links{display:flex;align-items:center;justify-content:center;gap:6px;font-size:12px;color:#777;margin-top:-2px;}
+    .helper-links a{color:#14326B;text-decoration:none;}
+    .helper-links a:hover{text-decoration:underline;}
+    .hl-sep{color:#ccc;}
+
+    /* DEMO BOX */
+    .demo-box{margin:0 28px 20px;background:#fffbeb;border:1px solid #fde68a;border-radius:5px;padding:14px;}
+    .demo-title{font-size:11px;font-weight:700;color:#92400e;letter-spacing:.5px;margin-bottom:10px;text-transform:uppercase;}
+    .demo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+    .demo-item{background:#fff;border:1px solid #fcd34d;border-radius:5px;padding:10px 8px;cursor:pointer;transition:all .18s;text-align:center;display:flex;flex-direction:column;gap:3px;}
+    .demo-item:hover{border-color:#f59e0b;background:#fffdf0;transform:translateY(-1px);}
+    .demo-item strong{font-size:12px;color:#92400e;display:block;}
+    .demo-item span{font-size:11px;color:#666;}
+
+    /* FOOTER */
+    .gov-footer{background:#14326B;border-top:3px solid #FF6B00;padding:14px 36px;margin-top:auto;}
+    .gf-inner{display:flex;align-items:center;justify-content:space-between;max-width:1280px;margin:0 auto;font-size:11px;color:rgba(255,255,255,0.6);flex-wrap:wrap;gap:8px;}
+    .gov-footer a{color:rgba(255,255,255,0.7);text-decoration:none;}
+    .gov-footer a:hover{color:#fff;text-decoration:underline;}
+
+    /* RESPONSIVE */
+    @media(max-width:900px){.login-wrap{grid-template-columns:1fr;}.info-panel{display:none;}.gs-min-main,.gs-min-sub{display:none;}}
+    @media(max-width:600px){.gov-strip-inner,.mh-inner,.gov-nav-inner,.breadcrumb,.login-body,.gf-inner{padding-left:16px;padding-right:16px;}.mh-english{font-size:16px;}.demo-grid{grid-template-columns:1fr;}.gs-right .gs-link{display:none;}}
+  </style>
+</head>
+<body>
+
+  <!-- GOV STRIP -->
+  <div class="gov-strip">
+    <div class="gov-strip-inner">
+      <div class="gs-left">
+        <!-- Tiranga Flag -->
+        <div style="display:flex;flex-direction:column;width:22px;height:33px;border:1px solid rgba(255,255,255,0.3);border-radius:2px;overflow:hidden;flex-shrink:0;box-shadow:0 1px 3px rgba(0,0,0,0.3);">
+          <div style="flex:1;background:#FF9933"></div>
+          <div style="flex:1;background:#ffffff;display:flex;align-items:center;justify-content:center;">
+            <svg width="8" height="8" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8" stroke="#000080" stroke-width="1.5" fill="none"/><circle cx="10" cy="10" r="1.5" fill="#000080"/><g stroke="#000080" stroke-width="0.8"><line x1="10" y1="2" x2="10" y2="18"/><line x1="2" y1="10" x2="18" y2="10"/><line x1="3.8" y1="3.8" x2="16.2" y2="16.2"/><line x1="16.2" y1="3.8" x2="3.8" y2="16.2"/></g></svg>
+          </div>
+          <div style="flex:1;background:#138808"></div>
+        </div>
+        
+        <div>
+          <div class="gs-hindi">भारत सरकार</div>
+          <div class="gs-english">Government of India</div>
+        </div>
+        <div class="gs-vline"></div>
+        <div>
+          <div class="gs-min-main">Ministry of Home Affairs</div>
+          <div class="gs-min-sub">Office of the Registrar General &amp; Census Commissioner, India</div>
+        </div>
+      </div>
+      <div class="gs-right">
+        <a href="#" class="gs-link">Screen Reader</a>
+        <span class="gs-sep">|</span>
+        <a href="#" class="gs-link">Skip to Content</a>
+        <span class="gs-sep">|</span>
+        <a href="#" class="gs-link gs-hindi-link">हिंदी</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN HEADER -->
+  <div class="main-header">
+    <div class="mh-inner">
+      <div class="mh-brand">
+        <div class="mh-chakra">
+          <svg width="50" height="50" viewBox="0 0 100 100" fill="none">
+            <circle cx="50" cy="50" r="44" stroke="#000080" stroke-width="3" fill="rgba(0,0,128,0.06)"/>
+            <circle cx="50" cy="50" r="32" stroke="#000080" stroke-width="1.5" fill="none" stroke-dasharray="5 3"/>
+            <circle cx="50" cy="50" r="8" fill="#000080"/>
+            <g stroke="#000080" stroke-width="1.5" opacity="0.7">
+              <line x1="50" y1="6" x2="50" y2="94"/><line x1="6" y1="50" x2="94" y2="50"/>
+              <line x1="20" y1="20" x2="80" y2="80"/><line x1="80" y1="20" x2="20" y2="80"/>
+              <line x1="14" y1="35" x2="86" y2="65"/><line x1="86" y1="35" x2="14" y2="65"/>
+              <line x1="35" y1="14" x2="65" y2="86"/><line x1="65" y1="14" x2="35" y2="86"/>
+              <line x1="11" y1="43" x2="89" y2="57"/><line x1="89" y1="43" x2="11" y2="57"/>
+              <line x1="43" y1="11" x2="57" y2="89"/><line x1="57" y1="11" x2="43" y2="89"/>
+            </g>
+          </svg>
+        </div>
+        <div class="mh-text">
+          <div class="mh-hindi">जनसंख्या — स्मार्ट जनगणना प्रणाली</div>
+          <div class="mh-english">JanSankhya — Smart Census System</div>
+          <div class="mh-tagline">Real-Time Population Registry &nbsp;·&nbsp; Integrated with UIDAI Aadhaar &nbsp;·&nbsp; Government of India</div>
+        </div>
+      </div>
+      <div class="mh-right">
+        <div class="live-badge"><span class="live-dot"></span> LIVE SYNC ACTIVE</div>
+        <div class="mh-clock" id="loginClock">--:--:-- IST</div>
+        <div class="mh-date" id="loginDate">-- --- ----</div>
+        <div class="mh-nic">NIC &nbsp;|&nbsp; Data updated every 3 sec</div>
+      </div>
+    </div>
+    <div class="tricolor"><div class="tc-s"></div><div class="tc-w"></div><div class="tc-g"></div></div>
+  </div>
+
+  <!-- NAVBAR — all items open modals except Home -->
+  <div class="gov-nav">
+    <div class="gov-nav-inner">
+      <a href="#" class="nav-item active">◆ Home</a>
+      <a href="#" class="nav-item" onclick="openModal('aboutModal');return false;">About Census 2027</a>
+      <a href="#" class="nav-item" onclick="openModal('selfModal');return false;">Self-Enumeration</a>
+      <a href="#" class="nav-item" onclick="openModal('resourceModal');return false;">Resources</a>
+      <a href="#" class="nav-item" onclick="openModal('stateModal');return false;">State Offices</a>
+      <a href="#" class="nav-item" onclick="openModal('contactModal');return false;">Contact Us</a>
+      <a href="#" class="nav-item" onclick="openModal('rtiModal');return false;">RTI</a>
+    </div>
+  </div>
+
+  <!-- BREADCRUMB -->
+  <div class="breadcrumb">
+    <div class="bc-inner">
+      <a href="#">🏠 Home</a>
+      <span class="bc-sep">›</span>
+      <span class="bc-current">Official Login — Enumerator / Supervisor / Admin</span>
+    </div>
+  </div>
+
+  <!-- LOGIN BODY -->
+  <div class="login-body">
+    <div class="login-wrap">
+
+      <!-- LEFT INFO PANEL -->
+      <div class="info-panel">
+        <div class="ip-title">Census 2027</div>
+        <div class="ip-sub">India's First Fully Digital Census</div>
+        <div class="ip-div"></div>
+        <div class="ip-points">
+          <div class="ip-pt"><span class="ip-pt-icon">🗓️</span><div class="ip-pt-text"><strong>Phase 1 — House Listing Operations</strong><span>April 2026 to September 2026</span></div></div>
+          <div class="ip-pt"><span class="ip-pt-icon">👥</span><div class="ip-pt-text"><strong>Phase 2 — Population Enumeration</strong><span>February 2027 · Reference date March 1, 2027</span></div></div>
+          <div class="ip-pt"><span class="ip-pt-icon">📱</span><div class="ip-pt-text"><strong>Mobile App Based Data Collection</strong><span>30+ lakh enumerators across India</span></div></div>
+          <div class="ip-pt"><span class="ip-pt-icon">🪪</span><div class="ip-pt-text"><strong>Aadhaar Integrated Auto-Fill</strong><span>Linked with UIDAI for instant citizen lookup</span></div></div>
+          <div class="ip-pt"><span class="ip-pt-icon">🔒</span><div class="ip-pt-text"><strong>Secured by Gemini AI</strong><span>Every change verified before database update</span></div></div>
+          <div class="ip-pt"><span class="ip-pt-icon">🇮🇳</span><div class="ip-pt-text"><strong>Pan-India Coverage</strong><span>6.4 lakh villages · 5,128 statutory towns</span></div></div>
+        </div>
+        <div class="ip-notice">⚠️ This is a prototype demonstration system for the 2027 Digital JanSankhya initiative. For official data, visit censusindia.gov.in</div>
+      </div>
+
+      <!-- RIGHT FORM PANEL -->
+      <div class="form-panel">
+        <div class="fp-header">
+          <div class="fp-title">Enumerator / Official Secure Login</div>
+          <div class="fp-sub">जनगणना कर्मचारी / अधिकारी सुरक्षित लॉगिन</div>
+        </div>
+
+        <div class="role-section">
+          <div class="role-section-label">Select Your Role</div>
+          <div class="role-tabs">
+            <button class="role-tab active" onclick="selectRole('enumerator',this)"><span class="ri">📋</span>Enumerator</button>
+            <button class="role-tab" onclick="selectRole('supervisor',this)"><span class="ri">👁️</span>Supervisor</button>
+            <button class="role-tab" onclick="selectRole('admin',this)"><span class="ri">🔐</span>Admin</button>
+          </div>
+        </div>
+
+        <div class="role-desc" id="roleDesc">📋 <strong>Enumerator:</strong> Can scan Aadhaar, collect household data, register newborns, and submit changes in their assigned zone.</div>
+
+        <div class="form-fields">
+          <div class="fg">
+            <label class="fl">Employee ID / Enumerator Code</label>
+            <input class="fi" id="loginId" type="text" placeholder="e.g. ENUM-GJ-2847" autocomplete="off">
+          </div>
+          <div class="fg">
+            <label class="fl">State / Union Territory</label>
+            <select class="fi" id="loginState">
+              <option value="">— Select State —</option>
+              <option>Gujarat</option><option>Maharashtra</option><option>Rajasthan</option>
+              <option>Uttar Pradesh</option><option>Bihar</option><option>Kerala</option>
+              <option>Tamil Nadu</option><option>West Bengal</option><option>Madhya Pradesh</option>
+              <option>Karnataka</option><option>Andhra Pradesh</option><option>Delhi</option>
+            </select>
+          </div>
+          <div class="fg">
+            <label class="fl">Password</label>
+            <div class="pw-wrap">
+              <input class="fi" id="loginPw" type="password" placeholder="Enter your password">
+              <button class="pw-eye" onclick="togglePw()" type="button">👁</button>
+            </div>
+          </div>
+          <div class="fg">
+            <label class="fl">Security Captcha</label>
+            <div class="cap-row">
+              <div class="cap-box" id="captchaDisplay">------</div>
+              <button class="cap-refresh" onclick="refreshCaptcha()" title="Refresh">↻</button>
+              <input class="fi cap-input" id="captchaInput" placeholder="Type captcha here" autocomplete="off">
+            </div>
+          </div>
+          <div class="login-error" id="loginError" style="display:none">⚠️ <span id="loginErrorMsg"></span></div>
+          <button class="login-btn" onclick="handleLogin()" id="loginBtn">🔐 &nbsp;Login Securely to JanSankhya 2027</button>
+          <div class="helper-links">
+            <a href="#">Forgot Password?</a><span class="hl-sep">|</span>
+            <a href="#">Register / Activate Account</a><span class="hl-sep">|</span>
+            <a href="#">Technical Help</a>
+          </div>
+        </div>
+
+        <div class="demo-box">
+          <div class="demo-title">🧪 Demo Login Credentials (For Testing Only)</div>
+          <div class="demo-grid">
+            <div class="demo-item" onclick="fillDemo('enumerator')"><strong>📋 Enumerator</strong><span>ID: ENUM-GJ-2847</span><span>Pass: enum123</span><span style="color:#16a34a;font-size:10px;margin-top:2px">Click to auto-fill</span></div>
+            <div class="demo-item" onclick="fillDemo('supervisor')"><strong>👁️ Supervisor</strong><span>ID: SUP-GJ-001</span><span>Pass: super123</span><span style="color:#16a34a;font-size:10px;margin-top:2px">Click to auto-fill</span></div>
+            <div class="demo-item" onclick="fillDemo('admin')"><strong>🔐 Admin</strong><span>ID: ADMIN-001</span><span>Pass: admin123</span><span style="color:#16a34a;font-size:10px;margin-top:2px">Click to auto-fill</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="gov-footer">
+    <div class="gf-inner">
+      <div>© 2026 Office of the Registrar General India, All Rights Reserved &nbsp;|&nbsp; <a href="#">Website Policy</a> &nbsp;|&nbsp; <a href="#">Privacy Policy</a> &nbsp;|&nbsp; <a href="#">Terms &amp; Conditions</a></div>
+      <div>Website Developed &amp; Maintained by NIC &nbsp;|&nbsp; Last Updated: April 2026</div>
+    </div>
+  </div>
+
+  <!-- ===== NAV MODALS ===== -->
+  <div class="nav-modal-overlay" id="aboutModal" onclick="closeModal('aboutModal')">
+    <div class="nav-modal" onclick="event.stopPropagation()">
+      <button class="nav-modal-close" onclick="closeModal('aboutModal')">✕</button>
+      <h2>About Census 2027</h2>
+      <div class="nm-divider"></div>
+      <div class="nm-sub">India's 16th National Census — First Digital Census</div>
+      <p>Census 2027 is India's 16th National Census and the country's first fully digital population enumeration exercise. It is being conducted in two phases — Phase 1 is House Listing Operations from April to September 2026, and Phase 2 is Population Enumeration in February 2027.<br><br>The census will cover 36 States and Union Territories, over 7,000 sub-districts, 5,128 statutory towns, and nearly 6.4 lakh villages. Over 30 lakh enumerators are participating in data collection using mobile applications. For the first time, citizens can self-enumerate through a secure online portal in 16 languages. The government has approved an outlay of ₹11,718.24 crore for this exercise.</p>
+    </div>
+  </div>
+
+  <div class="nav-modal-overlay" id="selfModal" onclick="closeModal('selfModal')">
+    <div class="nav-modal" onclick="event.stopPropagation()">
+      <button class="nav-modal-close" onclick="closeModal('selfModal')">✕</button>
+      <h2>Self-Enumeration Portal</h2>
+      <div class="nm-divider"></div>
+      <div class="nm-sub">Fill your census details online before the enumerator visits</div>
+      <p>The Self-Enumeration facility allows households to fill in their census details online through a secure portal. You can log in using your registered mobile number, submit your family's information, and generate a unique Self-Enumeration ID (QR code).<br><br>When the enumerator visits, they will scan this QR code to confirm your household is done — saving significant time for both you and the census team. Self-enumeration windows are open for 15 days in each state before the official house listing begins.<br><br>The portal is available in 16 languages including Hindi, English, Gujarati, Marathi, Tamil, Telugu, and more.</p>
+    </div>
+  </div>
+
+  <div class="nav-modal-overlay" id="resourceModal" onclick="closeModal('resourceModal')">
+    <div class="nav-modal" onclick="event.stopPropagation()">
+      <button class="nav-modal-close" onclick="closeModal('resourceModal')">✕</button>
+      <h2>Resources &amp; Downloads</h2>
+      <div class="nm-divider"></div>
+      <div class="nm-sub">Training materials, manuals, and guidelines</div>
+      <p>The following resources are available for enumerators and field staff:<br><br>
+      • Enumerator Training Manual (PDF)<br>
+      • House Listing Schedule Guidelines<br>
+      • Population Enumeration Schedule<br>
+      • FAQ for Enumerators<br>
+      • Regional Language Training Materials (16 languages)<br>
+      • Mobile App User Guide<br>
+      • Data Privacy and Security Guidelines<br><br>
+      All materials are available on the official Census India website at censusindia.gov.in</p>
+    </div>
+  </div>
+
+  <div class="nav-modal-overlay" id="stateModal" onclick="closeModal('stateModal')">
+    <div class="nav-modal" onclick="event.stopPropagation()">
+      <button class="nav-modal-close" onclick="closeModal('stateModal')">✕</button>
+      <h2>State Census Offices</h2>
+      <div class="nm-divider"></div>
+      <div class="nm-sub">Directorate of Census Operations — State-wise contacts</div>
+      <p>Each state and union territory has a Directorate of Census Operations headed by a Director of Census Operations (DCO). These offices coordinate all census activities within their jurisdiction.<br><br>
+      Key state offices include:<br>
+      • Gujarat — DCO Gandhinagar<br>
+      • Maharashtra — DCO Mumbai<br>
+      • Uttar Pradesh — DCO Lucknow<br>
+      • Bihar — DCO Patna<br>
+      • West Bengal — DCO Kolkata<br>
+      • Tamil Nadu — DCO Chennai<br>
+      • Kerala — DCO Thiruvananthapuram<br><br>
+      For state-specific queries, contact your respective DCO office or visit censusindia.gov.in/state-offices</p>
+    </div>
+  </div>
+
+  <div class="nav-modal-overlay" id="contactModal" onclick="closeModal('contactModal')">
+    <div class="nav-modal" onclick="event.stopPropagation()">
+      <button class="nav-modal-close" onclick="closeModal('contactModal')">✕</button>
+      <h2>Contact Us</h2>
+      <div class="nm-divider"></div>
+      <div class="nm-sub">Office of the Registrar General &amp; Census Commissioner, India</div>
+      <p>
+      <strong>Address:</strong><br>
+      Office of the Registrar General &amp; Census Commissioner, India<br>
+      2/A, Mansingh Road, New Delhi — 110011<br><br>
+      <strong>Email:</strong> censusindia@nic.in<br>
+      <strong>Helpline:</strong> 1800-11-2527 (Toll Free)<br>
+      <strong>Working Hours:</strong> Monday to Friday, 9:00 AM to 6:00 PM<br><br>
+      <strong>Technical Support for JanSankhya Portal:</strong><br>
+      Email: jansankhya-support@nic.in<br>
+      For enumerator login issues, please contact your District Census Officer.
+      </p>
+    </div>
+  </div>
+
+  <div class="nav-modal-overlay" id="rtiModal" onclick="closeModal('rtiModal')">
+    <div class="nav-modal" onclick="event.stopPropagation()">
+      <button class="nav-modal-close" onclick="closeModal('rtiModal')">✕</button>
+      <h2>Right to Information (RTI)</h2>
+      <div class="nm-divider"></div>
+      <div class="nm-sub">Information under the Right to Information Act, 2005</div>
+      <p>The Office of the Registrar General and Census Commissioner, India is a public authority under the Right to Information Act, 2005.<br><br>
+      <strong>Central Public Information Officer (CPIO):</strong><br>
+      Deputy Registrar General (Admin)<br>
+      Office of the Registrar General &amp; Census Commissioner, India<br>
+      2/A, Mansingh Road, New Delhi — 110011<br><br>
+      <strong>First Appellate Authority:</strong><br>
+      Joint Registrar General<br>
+      Same address as above<br><br>
+      RTI applications can be filed online at rtionline.gov.in or submitted physically to the above address. The prescribed fee is ₹10 per application.</p>
+    </div>
+  </div>
+
+  <script>
+    const CREDENTIALS = {
+      enumerator: { id:'ENUM-GJ-2847', pass:'enum123', name:'Vedanshi Desai',  zone:'Surat, Gujarat', avatar:'VD' },
+      supervisor:  { id:'SUP-GJ-001',  pass:'super123', name:'Rahul Sharma',    zone:'Gujarat Zone',   avatar:'RS' },
+      admin:       { id:'ADMIN-001',   pass:'admin123', name:'Admin Officer',   zone:'National HQ',    avatar:'AO' },
+    };
+    let currentRole = 'enumerator';
+    let captchaValue = '';
+
+    const roleDescs = {
+      enumerator:'📋 <strong>Enumerator:</strong> Can scan Aadhaar, collect household data, register newborns, and submit changes in their assigned zone.',
+      supervisor:'👁️ <strong>Supervisor:</strong> Can monitor enumerator progress, review and approve/reject changes, and view zone-level reports.',
+      admin:'🔐 <strong>Admin:</strong> Full access to all databases, national dashboard, change approvals, and system configuration.',
+    };
+
+    function selectRole(role, btn) {
+      currentRole = role;
+      document.querySelectorAll('.role-tab').forEach(t => t.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('roleDesc').innerHTML = roleDescs[role];
+      const ph = {enumerator:'e.g. ENUM-GJ-2847', supervisor:'e.g. SUP-GJ-001', admin:'e.g. ADMIN-001'};
+      document.getElementById('loginId').placeholder = ph[role];
+      hideError();
+    }
+
+    function fillDemo(role) {
+      const c = CREDENTIALS[role];
+      document.querySelectorAll('.role-tab').forEach((t,i) => {
+        const roles = ['enumerator','supervisor','admin'];
+        if(roles[i]===role){t.classList.add('active');selectRole(role,t);}
+        else t.classList.remove('active');
+      });
+      document.getElementById('loginId').value = c.id;
+      document.getElementById('loginPw').value = c.pass;
+      document.getElementById('loginState').value = 'Gujarat';
+      document.getElementById('captchaInput').value = captchaValue;
+    }
+
+    function generateCaptcha() {
+      const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+      captchaValue = Array.from({length:6},()=>chars[Math.floor(Math.random()*chars.length)]).join('');
+      document.getElementById('captchaDisplay').textContent = captchaValue;
+    }
+    function refreshCaptcha() { generateCaptcha(); document.getElementById('captchaInput').value=''; }
+    function togglePw() { const p=document.getElementById('loginPw'); p.type=p.type==='password'?'text':'password'; }
+    function showError(msg) { document.getElementById('loginErrorMsg').textContent=msg; document.getElementById('loginError').style.display='flex'; }
+    function hideError() { document.getElementById('loginError').style.display='none'; }
+
+    function handleLogin() {
+      hideError();
+      const id      = document.getElementById('loginId').value.trim();
+      const state   = document.getElementById('loginState').value;
+      const pw      = document.getElementById('loginPw').value;
+      const captcha = document.getElementById('captchaInput').value.trim().toUpperCase();
+      const btn     = document.getElementById('loginBtn');
+      if(!id)      { showError('Please enter your Employee ID / Enumerator Code.'); return; }
+      if(!state)   { showError('Please select your State / Union Territory.'); return; }
+      if(!pw)      { showError('Please enter your password.'); return; }
+      if(!captcha) { showError('Please enter the security captcha.'); return; }
+      if(captcha!==captchaValue) { showError('Incorrect captcha. Please try again.'); refreshCaptcha(); return; }
+      const cred = CREDENTIALS[currentRole];
+      if(id!==cred.id||pw!==cred.pass) { showError('Invalid Employee ID or Password. Please check your credentials.'); refreshCaptcha(); return; }
+      btn.textContent='⏳ Verifying credentials...'; btn.classList.add('loading');
+      sessionStorage.setItem('js_user', JSON.stringify({ role:currentRole, name:cred.name, zone:state+' — '+cred.zone, avatar:cred.avatar, id:cred.id }));
+      setTimeout(() => { btn.textContent='✅ Login successful! Redirecting...'; setTimeout(()=>{ window.location.href='index.html'; },800); },1200);
+    }
+
+    // NAV MODALS
+    function openModal(id) { document.getElementById(id).classList.add('open'); }
+    function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+    document.addEventListener('keydown', e => { if(e.key==='Escape') document.querySelectorAll('.nav-modal-overlay.open').forEach(m=>m.classList.remove('open')); });
+
+    // CLOCK
+    function updateClock() {
+      const now = new Date();
+      const c = document.getElementById('loginClock');
+      const d = document.getElementById('loginDate');
+      if(c) c.textContent = now.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit',second:'2-digit'})+' IST';
+      if(d) d.textContent = now.toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'});
+    }
+    setInterval(updateClock,1000); updateClock();
+    document.addEventListener('keydown', e => { if(e.key==='Enter') handleLogin(); });
+    generateCaptcha();
+  </script>
+</body>
+</html>
